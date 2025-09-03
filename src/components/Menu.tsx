@@ -218,7 +218,18 @@ const Menu: React.FC<MenuProps> = ({
       <button onClick={() => setIsOpen(!isOpen)} className="menu-toggle-pc">
         {isOpen ? "メニューを閉じる" : "メニューを開く"}
       </button>
+
       <div className={`menu-container ${isOpen ? "open" : ""}`} ref={menuRef}>
+        {/* 👇 ここに overlay を入れる！ */}
+        {isOpen && (
+          <div
+            className="menu-overlay"
+            onClick={(e) => {
+              e.stopPropagation(); // ← これでメニュー内のクリックを無視しない！
+              setIsOpen(false);
+            }}
+          />
+        )}
         <div className="menu-content">
           <button onClick={handleNewChat} className="new-chat-button">
             + 新しい対話を開始
