@@ -86,33 +86,33 @@ const Menu: React.FC<MenuProps> = ({
       e.preventDefault(); // デフォルトのスクロール動作などを抑制
     }
   };
-  const handleTouchEnd = () => {
-    if (touchStartRef.current !== null && touchMoveRef.current !== null) {
-      const swipeDistance = touchMoveRef.current - touchStartRef.current;
-      if (swipeDistance > 30) setIsOpen(true); // 感度を調整
-      else if (swipeDistance < -30) setIsOpen(false); // 感度を調整
-    }
-    touchStartRef.current = null;
-    touchMoveRef.current = null;
-  };
+  //const handleTouchEnd = () => {
+  //  if (touchStartRef.current !== null && touchMoveRef.current !== null) {
+  //    const swipeDistance = touchMoveRef.current - touchStartRef.current;
+  //    if (swipeDistance > 30) setIsOpen(true); // 感度を調整
+  //    else if (swipeDistance < -30) setIsOpen(false); // 感度を調整
+  //  }
+  //  touchStartRef.current = null;
+  //  touchMoveRef.current = null;
+  //};
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
+  //useEffect(() => {
+  //  const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+  //    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+  //      setIsOpen(false);
+  //    }
+  //  };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("touchstart", handleClickOutside);
-    }
+  //  if (isOpen) {
+  //    document.addEventListener("mousedown", handleClickOutside);
+  //    document.addEventListener("touchstart", handleClickOutside);
+  //  }
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [isOpen]);
+  //  return () => {
+  //    document.removeEventListener("mousedown", handleClickOutside);
+  //    document.removeEventListener("touchstart", handleClickOutside);
+  //  };
+  //}, [isOpen]);
 
   // Action handlers
   const handleSwitch = (id: string) => {
@@ -213,7 +213,7 @@ const Menu: React.FC<MenuProps> = ({
       className="touch-handler"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      // 一時的 onTouchEnd={handleTouchEnd}
     >
       <button onClick={() => setIsOpen(!isOpen)} className="menu-toggle-pc">
         {isOpen ? "メニューを閉じる" : "メニューを開く"}
