@@ -102,8 +102,8 @@ const Menu: React.FC<MenuProps> = ({
       if (menuElement && !menuElement.contains(event.target as Node))
         setIsOpen(false);
     };
-    if (isOpen) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    if (isOpen) document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [isOpen]);
 
   // Action handlers
