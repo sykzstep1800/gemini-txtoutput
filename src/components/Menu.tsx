@@ -77,17 +77,19 @@ const Menu: React.FC<MenuProps> = ({
 
   // Swipe gesture handlers
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (e.touches[0].clientX < 30) touchStartRef.current = e.touches[0].clientX;
+    touchStartRef.current = e.touches[0].clientX;
   };
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (touchStartRef.current !== null)
+    if (touchStartRef.current !== null) {
       touchMoveRef.current = e.touches[0].clientX;
+      e.preventDefault(); // デフォルトのスクロール動作などを抑制
+    }
   };
   const handleTouchEnd = () => {
     if (touchStartRef.current !== null && touchMoveRef.current !== null) {
       const swipeDistance = touchMoveRef.current - touchStartRef.current;
-      if (swipeDistance > 50) setIsOpen(true);
-      else if (swipeDistance < -50) setIsOpen(false);
+      if (swipeDistance > 30) setIsOpen(true); // 感度を調整
+      else if (swipeDistance < -30) setIsOpen(false); // 感度を調整
     }
     touchStartRef.current = null;
     touchMoveRef.current = null;
