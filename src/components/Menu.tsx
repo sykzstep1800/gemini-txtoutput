@@ -60,7 +60,6 @@ const Menu: React.FC<MenuProps> = ({
   const touchMoveRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const apiKeyRef = useRef<HTMLDivElement>(null);
 
   // Sync dropdown with current system instruction
   useEffect(() => {
