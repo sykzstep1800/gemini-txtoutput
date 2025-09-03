@@ -219,7 +219,7 @@ const Menu: React.FC<MenuProps> = ({
         {isOpen ? "メニューを閉じる" : "メニューを開く"}
       </button>
       <div className={`menu-container ${isOpen ? "open" : ""}`} ref={menuRef}>
-        <div className="menu-content" onClick={(e) => e.stopPropagation()}>
+        <div className="menu-content">
           <button onClick={handleNewChat} className="new-chat-button">
             + 新しい対話を開始
           </button>
