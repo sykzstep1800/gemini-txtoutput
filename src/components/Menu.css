@@ -11,6 +11,7 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  z-index: 1001;
 }
 
 .menu-container.open {
@@ -174,7 +175,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 1000;
 }
 
 /* SP styles */
