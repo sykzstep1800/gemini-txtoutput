@@ -59,6 +59,7 @@ const Menu: React.FC<MenuProps> = ({
   const touchStartRef = useRef<number | null>(null);
   const touchMoveRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // Sync dropdown with current system instruction
   useEffect(() => {
@@ -95,15 +96,22 @@ const Menu: React.FC<MenuProps> = ({
     touchMoveRef.current = null;
   };
 
-  // Close menu on outside click
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const menuElement = document.querySelector(".menu-container");
-      if (menuElement && !menuElement.contains(event.target as Node))
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+      }
     };
-    if (isOpen) document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [isOpen]);
 
   // Action handlers
@@ -173,7 +181,9 @@ const Menu: React.FC<MenuProps> = ({
   const handlePresetChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const name = e.target.value;
     setSelectedPresetName(name); // 選択された名前を state に保存
-    const selectedPreset = systemInstructionPresets.find((p) => p.name === name);
+    const selectedPreset = systemInstructionPresets.find(
+      (p) => p.name === name
+    );
     if (selectedPreset) {
       onSystemInstructionChange(selectedPreset.instruction);
     } else {
@@ -190,7 +200,10 @@ const Menu: React.FC<MenuProps> = ({
   };
 
   const handleDeletePreset = () => {
-    if (selectedPresetName && confirm(`プリセット「${selectedPresetName}」を削除しますか？`)) {
+    if (
+      selectedPresetName &&
+      confirm(`プリセット「${selectedPresetName}」を削除しますか？`)
+    ) {
       onDeleteSystemInstructionPreset(selectedPresetName);
     }
   };
@@ -205,8 +218,8 @@ const Menu: React.FC<MenuProps> = ({
       <button onClick={() => setIsOpen(!isOpen)} className="menu-toggle-pc">
         {isOpen ? "メニューを閉じる" : "メニューを開く"}
       </button>
-      <div className={`menu-container ${isOpen ? "open" : ""}`}>
-        <div className="menu-content">
+      <div className={`menu-container ${isOpen ? "open" : ""}`} ref={menuRef}>
+        <div className="menu-content" onClick={(e) => e.stopPropagation()}>
           <button onClick={handleNewChat} className="new-chat-button">
             + 新しい対話を開始
           </button>
@@ -270,7 +283,10 @@ const Menu: React.FC<MenuProps> = ({
                 placeholder="例: あなたは優秀なアシスタントです。"
               />
               <div className="system-instruction-presets">
-                <select onChange={handlePresetChange} value={selectedPresetName}>
+                <select
+                  onChange={handlePresetChange}
+                  value={selectedPresetName}
+                >
                   <option value="">プリセットを選択...</option>
                   {systemInstructionPresets.map((preset) => (
                     <option key={preset.name} value={preset.name}>
@@ -290,7 +306,10 @@ const Menu: React.FC<MenuProps> = ({
               </div>
             </div>
 
-            <ApiKeyInput selectedModel={selectedModel} onModelChange={onModelChange} />
+            <ApiKeyInput
+              selectedModel={selectedModel}
+              onModelChange={onModelChange}
+            />
             <button onClick={handleExport} className="export-button">
               現在の対話をエクスポート
             </button>
@@ -315,4 +334,3 @@ const Menu: React.FC<MenuProps> = ({
 };
 
 export default Menu;
-
